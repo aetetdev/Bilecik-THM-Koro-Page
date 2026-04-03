@@ -120,11 +120,17 @@
       display: inline-block;
       background: rgba(160,120,58,0.13);
       color: #7a5020;
-      font-size: 11px;
-      padding: 3px 10px;
+      font-size: 10px;
+      padding: 2px 8px;
       border-radius: 20px;
       margin-bottom: 8px;
       width: fit-content;
+    }
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-bottom: 8px;
     }
 
     .empty-box {
@@ -162,13 +168,24 @@
         <div class="slide active" id="slide-0">
           <div class="welcome-icon">🎵</div>
           <h2>Bilecik Belediyesi Türk Halk Müziği Korosu Konseri</h2>
-          <p>Ayşe Erbay Arıkan - Semih Arıkan ve diğerleri 😂 çok güzel şarkılar söylücek özellikle semih abi şakıcak</p>
+          <p style="font-size:11px; color:#a0783a; margin-bottom:5px;">Erkek Koristler</p>
+          <div class="tag-row">
+            <span class="tag">Ad Soyad</span>
+            <span class="tag">Ad Soyad</span>
+            <!-- 17 erkek -->
+          </div>
+
+          <p style="font-size:11px; color:#a0783a; margin:8px 0 5px;">Kadın Koristler</p>
+          <div class="tag-row">
+            <span class="tag">Ad Soyad</span>
+            <span class="tag">Ad Soyad</span>
+            <!-- 17 kadın -->
+          </div>
           <hr class="div">
           <p style="font-size:13px;color:#7a5a2a;">Oklar ile sayfalar arasında geçiş yapabilirsiniz. Her sayfada koromuzdan yeni bir şarkı sizi bekliyor.</p>
         </div>
 
         <div class="slide" id="slide-1">
-          <span class="tag">Açıklama</span>
           <h2>Otizm Farkındalık Haftası</h2>
           <p>Otizm farkındalık haftası kapsamında, otizmle yaşayan bireylerin ve ailelerinin ihtiyaçları doğrultusunda düzenlenmiştir.</p>
           <hr class="div">
