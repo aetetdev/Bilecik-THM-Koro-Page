@@ -1013,32 +1013,27 @@
 
   let current = 0;
 
-  const dotRow = document.getElementById('dotRow');
-  for (let i = 0; i < total; i++) {
-    const d = document.createElement('div');
-    d.className = 'dot' + (i === 0 ? ' active' : '');
-    d.onclick = () => goTo(i);
-    dotRow.appendChild(d);
-  }
-
   function updateHeader() {
-    document.getElementById('slideNum').textContent   = (current + 1) + ' / ' + total;
+    document.getElementById('slideNum').textContent = (current + 1) + ' / ' + total;
     document.getElementById('slideTitle').textContent = titles[current];
-    document.getElementById('slideSub').textContent   = subtitles[current];
+    document.getElementById('slideSub').textContent = subtitles[current];
   }
 
   function goTo(index) {
     if (index === current) return;
+
     const dir = index > current ? 1 : -1;
+
     document.getElementById('slide-' + current).classList.remove('active');
+
     current = index;
+
     const s = document.getElementById('slide-' + current);
     const cls = dir > 0 ? 'anim-right' : 'anim-left';
+
     s.classList.add('active', cls);
     s.addEventListener('animationend', () => s.classList.remove(cls), { once: true });
-    document.getElementById('prevBtn').disabled = current === 0;
-    document.getElementById('nextBtn').disabled = current === total - 1;
-    document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === current));
+
     updateHeader();
   }
 
@@ -1046,6 +1041,7 @@
     const next = current + dir;
     if (next >= 0 && next < total) goTo(next);
   }
+
   const slider = document.querySelector('.card-container');
 
   let touchStartX = 0;
@@ -1062,7 +1058,7 @@
   slider.addEventListener('touchend', () => {
     const diff = touchStartX - touchEndX;
 
-    if (Math.abs(diff) > 60) { // biraz artırdık, yanlış swipe azalır
+    if (Math.abs(diff) > 50) {
       navigate(diff > 0 ? 1 : -1);
     }
   }, { passive: true });
