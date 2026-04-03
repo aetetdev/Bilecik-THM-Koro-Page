@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bilecik Belediyesi Türk Halk Müziği Konseri</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    .page {
+      min-height: 100vh;
+      background-color: #f5edd6;
+      background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Ccircle cx='40' cy='60' r='6' fill='none' stroke='%23c9a96e' stroke-width='1.2' opacity='0.35'/%3E%3Cellipse cx='40' cy='60' rx='18' ry='6' fill='none' stroke='%23c9a96e' stroke-width='1' opacity='0.3'/%3E%3Crect x='57' y='54' width='2' height='22' fill='%23c9a96e' opacity='0.3' rx='1'/%3E%3Crect x='57' y='54' width='8' height='3' fill='%23c9a96e' opacity='0.3' rx='1'/%3E%3Ccircle cx='130' cy='30' r='5' fill='none' stroke='%23c9a96e' stroke-width='1.2' opacity='0.25'/%3E%3Cellipse cx='130' cy='30' rx='15' ry='5' fill='none' stroke='%23c9a96e' stroke-width='1' opacity='0.2'/%3E%3Crect x='144' y='25' width='2' height='18' fill='%23c9a96e' opacity='0.2' rx='1'/%3E%3Ctext x='10' y='130' font-size='28' fill='%23c9a96e' opacity='0.18' font-family='serif'%3E𝄞%3C/text%3E%3Ctext x='90' y='100' font-size='22' fill='%23c9a96e' opacity='0.15' font-family='serif'%3E𝄢%3C/text%3E%3Ctext x='155' y='160' font-size='20' fill='%23c9a96e' opacity='0.2' font-family='serif'%3E♩%3C/text%3E%3Ctext x='30' y='180' font-size='16' fill='%23c9a96e' opacity='0.18' font-family='serif'%3E♫%3C/text%3E%3Ctext x='110' y='185' font-size='14' fill='%23c9a96e' opacity='0.15' font-family='serif'%3E♪%3C/text%3E%3Cline x1='0' y1='90' x2='200' y2='90' stroke='%23c9a96e' stroke-width='0.4' opacity='0.2'/%3E%3Cline x1='0' y1='96' x2='200' y2='96' stroke='%23c9a96e' stroke-width='0.4' opacity='0.2'/%3E%3Cline x1='0' y1='102' x2='200' y2='102' stroke='%23c9a96e' stroke-width='0.4' opacity='0.2'/%3E%3Cline x1='0' y1='108' x2='200' y2='108' stroke='%23c9a96e' stroke-width='0.4' opacity='0.2'/%3E%3Cline x1='0' y1='114' x2='200' y2='114' stroke='%23c9a96e' stroke-width='0.4' opacity='0.2'/%3E%3C/svg%3E");
+      font-family: 'Georgia', serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 1.2rem 0.5rem 1.5rem;
+    }
+
+    .slider-wrapper {
+      width: 100%;
+      max-width: 420px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .arrow-btn {
+      width: 36px;
+      height: 36px;
+      min-width: 36px;
+      border-radius: 50%;
+      background: rgba(245, 237, 214, 0.75);
+      border: 1.5px solid rgba(180, 140, 80, 0.4);
+      color: #5a3e1b;
+      font-size: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      z-index: 10;
+      transition: background 0.2s;
+      user-select: none;
+    }
+    .arrow-btn:hover { background: rgba(220, 200, 160, 0.9); }
+    .arrow-btn:disabled { opacity: 0.25; cursor: default; }
+
+    .card-container { flex: 1; overflow: hidden; }
+
+    .song-header-card {
+      background: rgba(255, 248, 225, 0.82);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(180, 140, 80, 0.35);
+      border-bottom: none;
+      border-radius: 18px 18px 0 0;
+      padding: 1rem 1.4rem 2.4rem;
+      position: relative;
+      z-index: 2;
+    }
+    .song-header-card .slide-num {
+      font-size: 11px;
+      color: #a0783a;
+      letter-spacing: 0.07em;
+      margin-bottom: 3px;
+    }
+    .song-header-card .slide-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: #1a0d00;
+      line-height: 1.3;
+    }
+    .song-header-card .slide-sub {
+      font-size: 10px;
+      color: #7a5a2a;
+      margin-top: 3px;
+    }
+    .notes-deco {
+      position: absolute;
+      top: 10px;
+      right: 14px;
+      font-size: 18px;
+      opacity: 0.2;
+      color: #5a3e1b;
+      pointer-events: none;
+    }
+
+    .main-card {
+      background: rgba(255, 248, 225, 0.58);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(180, 140, 80, 0.28);
+      border-top: none;
+      border-radius: 0 0 20px 20px;
+      padding: 2rem 1.4rem 1.4rem;
+      margin-top: -1.8rem;
+      min-height: 700px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .slide { display: none; flex-direction: column; flex: 1; color: #1a0f00; }
+    .slide.active { display: flex; }
+    .slide.anim-right { animation: fromRight 0.36s cubic-bezier(.4,0,.2,1) both; }
+    .slide.anim-left  { animation: fromLeft  0.36s cubic-bezier(.4,0,.2,1) both; }
+
+    @keyframes fromRight { from { transform: translateX(55px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+    @keyframes fromLeft  { from { transform: translateX(-55px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+    .slide h2 { font-size: 18px; font-weight: 700; color: #2c1a06; margin-bottom: 0.7rem; }
+    .slide p  { font-size: 14px; line-height: 1.8; color: #1a0f00; }
+
+    .welcome-icon { font-size: 38px; margin-bottom: 0.5rem; }
+
+    hr.div { border: none; border-top: 1px solid rgba(160,120,58,0.2); margin: 0.9rem 0; }
+
+    .tag {
+      display: inline-block;
+      background: rgba(160,120,58,0.13);
+      color: #7a5020;
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-bottom: 8px;
+      width: fit-content;
+    }
+
+    .empty-box {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border: 1.5px dashed rgba(160,120,58,0.28);
+      border-radius: 10px;
+      margin-top: 0.8rem;
+      padding: 2rem;
+      color: #a0783a;
+      font-size: 13px;
+      text-align: center;
+      gap: 6px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="page">
+  <div class="slider-wrapper">
+    <button class="arrow-btn" id="prevBtn" onclick="navigate(-1)" disabled>&#8249;</button>
+
+    <div class="card-container">
+      <div class="song-header-card">
+        <div class="notes-deco">𝄞 ♩ ♫</div>
+        <div class="slide-num" id="slideNum">1 / 5</div>
+        <div class="slide-title" id="slideTitle">Bilecik Belediyesi Türk Halk Müziği Korosu Konseri</div>
+        <div class="slide-sub" id="slideSub">Koro Şefi: Ali Rıza Vural</div>
+      </div>
+
+      <div class="main-card">
+        <div class="slide active" id="slide-0">
+          <div class="welcome-icon">🎵</div>
+          <h2>Bilecik Belediyesi Türk Halk Müziği Korosu Konseri</h2>
+          <p>Bu gün bu konserde, sesler, ritimler ve melodilerle dolu güzel bir yolculuğa çıkacağız.</p>
+          <hr class="div">
+          <p style="font-size:13px;color:#7a5a2a;">Oklar ile sayfalar arasında geçiş yapabilirsiniz. Her sayfada koromuzdan yeni bir şarkı sizi bekliyor.</p>
+        </div>
+
+        <div class="slide" id="slide-1">
+          <span class="tag">Açıklama</span>
+          <h2>Otizm Farkındalık Haftası</h2>
+          <p>Otizm farkındalık haftası kapsamında, otizmle yaşayan bireylerin ve ailelerinin ihtiyaçları doğrultusunda düzenlenmiştir.</p>
+          <hr class="div">
+          <p style="font-size:13px;color:#7a5a2a;">Burada onaylanacak yazı olacak şimdilik boşş</p>
+        </div>
+        
+        <div class="slide" id="slide-2">
+          <div class="empty-box">
+            <span style="font-size:32px;opacity:0.45;">🎼</span>
+            <span>Şarkı içeriği buraya gelecek</span>
+            <span style="font-size:11px;opacity:0.65;">Notalar, sözler ve akorlar</span>
+          </div>
+        </div>
+
+        <div class="slide" id="slide-3">
+          <div class="empty-box">
+            <span style="font-size:32px;opacity:0.45;">🎼</span>
+            <span>Şarkı içeriği buraya gelecek</span>
+            <span style="font-size:11px;opacity:0.65;">Notalar, sözler ve akorlar</span>
+          </div>
+        </div>
+
+        <div class="slide" id="slide-4">
+          <div class="empty-box">
+            <span style="font-size:32px;opacity:0.45;">🎼</span>
+            <span>Şarkı içeriği buraya gelecek</span>
+            <span style="font-size:11px;opacity:0.65;">Notalar, sözler ve akorlar</span>
+          </div>
+        </div>
+
+        <div class="slide" id="slide-5">
+          <div class="empty-box">
+            <span style="font-size:32px;opacity:0.45;">🎼</span>
+            <span>Şarkı içeriği buraya gelecek</span>
+            <span style="font-size:11px;opacity:0.65;">Notalar, sözler ve akorlar</span>
+          </div>
+        </div>
+
+        <div class="slide" id="slide-6">
+          <span class="tag">Solist: Serkan Ekinci.</span>
+          <div class="empty-box">
+            <span style="font-size:32px;opacity:0.45;">🎼</span>
+            <span>Şarkı içeriği buraya gelecek</span>
+            <span style="font-size:11px;opacity:0.65;">Notalar, sözler ve akorlar</span>
+          </div>
+        </div>
+
+        <div class="slide" id="slide-7">
+          <div class="empty-box">
+            <span style="font-size:32px;opacity:0.45;">🎼</span>
+            <span>Şarkı içeriği buraya gelecek</span>
+            <span style="font-size:11px;opacity:0.65;">Notalar, sözler ve akorlar</span>
+          </div>
+        </div>
+
+        <div class="slide" id="slide-8">
+          <span class="tag">Solist: Muhammed Talha Kandemir.</span>
+          <div class="empty-box">
+            <span style="font-size:32px;opacity:0.45;">🎼</span>
+            <span>Şarkı içeriği buraya gelecek</span>
+            <span style="font-size:11px;opacity:0.65;">Notalar, sözler ve akorlar</span>
+          </div>
+        </div>
+
+        <div class="slide" id="slide-9">
+          <div class="empty-box">
+            <span style="font-size:32px;opacity:0.45;">🎼</span>
+            <span>Şarkı içeriği buraya gelecek</span>
+            <span style="font-size:11px;opacity:0.65;">Notalar, sözler ve akorlar</span>
+          </div>
+        </div>
+
+        <div class="slide" id="slide-10">
+          <span class="tag">Solist: Dania [HOCAM SOYADI LAZIM]</span>
+          <div class="empty-box">
+            <span style="font-size:32px;opacity:0.45;">🎼</span>
+            <span>Şarkı içeriği buraya gelecek</span>
+            <span style="font-size:11px;opacity:0.65;">Notalar, sözler ve akorlar</span>
+          </div>
+        </div>
+
+        <div class="slide" id="slide-11">
+          <div class="empty-box">
+            <span style="font-size:32px;opacity:0.45;">🎼</span>
+            <span>Şarkı içeriği buraya gelecek</span>
+            <span style="font-size:11px;opacity:0.65;">Notalar, sözler ve akorlar</span>
+          </div>
+        </div>
+
+        <div class="slide" id="slide-12">
+          <span class="tag">Solist: Hülya Yıldırım.</span>
+          <div class="empty-box">
+            <span style="font-size:32px;opacity:0.45;">🎼</span>
+            <span>Şarkı içeriği buraya gelecek</span>
+            <span style="font-size:11px;opacity:0.65;">Notalar, sözler ve akorlar</span>
+          </div>
+        </div>
+
+        <div class="slide" id="slide-13">
+          <div class="empty-box">
+            <span style="font-size:32px;opacity:0.45;">🎼</span>
+            <span>Şarkı içeriği buraya gelecek</span>
+            <span style="font-size:11px;opacity:0.65;">Notalar, sözler ve akorlar</span>
+          </div>
+        </div>
+
+        <div class="slide" id="slide-14">
+          <span class="tag">Solist: Ziya Yaman.</span>
+          <div class="empty-box">
+            <span style="font-size:32px;opacity:0.45;">🎼</span>
+            <span>Şarkı içeriği buraya gelecek</span>
+            <span style="font-size:11px;opacity:0.65;">Notalar, sözler ve akorlar</span>
+          </div>
+        </div>
+
+        <div class="slide" id="slide-15">
+          <div class="empty-box">
+            <span style="font-size:32px;opacity:0.45;">🎼</span>
+            <span>Şarkı içeriği buraya gelecek</span>
+            <span style="font-size:11px;opacity:0.65;">Notalar, sözler ve akorlar</span>
+          </div>
+        </div>
+
+        <div class="slide" id="slide-16">
+          <span class="tag">Solist: Melek Burcu Kütük.</span>
+          <div class="empty-box">
+            <span style="font-size:32px;opacity:0.45;">🎼</span>
+            <span>Şarkı içeriği buraya gelecek</span>
+            <span style="font-size:11px;opacity:0.65;">Notalar, sözler ve akorlar</span>
+          </div>
+        </div>
+
+        <div class="slide" id="slide-17">
+          <span class="tag">Solist: Şahin Yalçın - Melahat Vural.</span>
+          <div class="empty-box">
+            <span style="font-size:32px;opacity:0.45;">🎼</span>
+            <span>Şarkı içeriği buraya gelecek</span>
+            <span style="font-size:11px;opacity:0.65;">Notalar, sözler ve akorlar</span>
+          </div>
+        </div>
+
+        <div class="slide" id="slide-18">
+          <span class="tag">Solist: Şahin Yalçın - Melahat Vural.</span>
+          <div class="empty-box">
+            <span style="font-size:32px;opacity:0.45;">🎼</span>
+            <span>Şarkı içeriği buraya gelecek</span>
+            <span style="font-size:11px;opacity:0.65;">Notalar, sözler ve akorlar</span>
+          </div>
+        </div>
+
+        <div class="slide" id="slide-19">
+          <div class="empty-box">
+            <span style="font-size:32px;opacity:0.45;">🎼</span>
+            <span>Şarkı içeriği buraya gelecek</span>
+            <span style="font-size:11px;opacity:0.65;">Notalar, sözler ve akorlar</span>
+          </div>
+        </div>
+
+        <div class="slide" id="slide-20">
+          <span class="tag">Solist: Ali Rıza Vural.</span>
+          <div class="empty-box">
+            <span style="font-size:32px;opacity:0.45;">🎼</span>
+            <span>Şarkı içeriği buraya gelecek</span>
+            <span style="font-size:11px;opacity:0.65;">Notalar, sözler ve akorlar</span>
+          </div>
+        </div>
+
+        <div class="slide" id="slide-21">
+          <div class="empty-box">
+            <span style="font-size:32px;opacity:0.45;">🎼</span>
+            <span>Şarkı içeriği buraya gelecek</span>
+            <span style="font-size:11px;opacity:0.65;">Notalar, sözler ve akorlar</span>
+          </div>
+        </div>
+
+        <div class="slide" id="slide-22">
+          <div class="empty-box">
+            <span style="font-size:32px;opacity:0.45;">🎼</span>
+            <span>Şarkı içeriği buraya gelecek</span>
+            <span style="font-size:11px;opacity:0.65;">Notalar, sözler ve akorlar</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button class="arrow-btn" id="nextBtn" onclick="navigate(1)">&#8250;</button>
+  </div>
+</div>
+
+<script>
+  const total = 22;
+  const titles    = ['Bilecik Belediyesi Türk Halk Müziği Korosu Konseri',
+                     'Bilecik Belediyesi Türk Halk Müziği Korosu Konseri',
+                     'Yüce Dağ Başında Yanar Bir Işık',
+                     'Dur Leyla',
+                     'Mardinli Güzel Yarim',
+                     'Dağlar Duman Böyle',
+                     'Vardım Hint Eline',
+                     'Tatlı Dile Güler Yüze',
+                     'Kırmızı Buğday',
+                     'Gülüşün Gülden Güzel',
+                     'Oy Beni Vurun Vurun',
+                     'Antalyanın Mor Üzümü Potpori',
+                     'Bahçalarda Barım Var Potpori',
+                     'Maraştan Bir Haber Geldi',
+                     'Kerimoğlu',
+                     'Hızırpaşa Bizi Berdar Etmeden',
+                     'Evlerinin Önü Bulgur Kazanı Potpori',
+                     'Pınarbaşından Bulanır',
+                     'Seher Yıldızı',
+                     'Kalenin Dibinde Bir Taş Olaydım',
+                     'Bergüzar',
+                     'Barış Güvercini'];
+  const subtitles = ['Koro Şefi: Ali Rıza Vural',
+                     'Koro Şefi: Ali Rıza Vural',
+                     'Söz-Müzik: Anonim.',
+                     'Söz-Müzik: Ahmet Kartalkanat.',
+                     'Söz-Müzik: Halil Alkan.',
+                     'Söz-Müzik: Aşık Mahzuni Şerif.',
+                     'Söz-Müzik: Anonim.',
+                     'Söz-Müzik: Neşet Ertaş.',
+                     'Söz-Müzik: Anonim.',
+                     'Söz-Müzik: Neşet Ertaş.',
+                     'Söz-Müzik: Tarık İhtiyar.',
+                     'Söz-Müzik: Anonim.',
+                     'Söz-Müzik: Anonim.',
+                     'Söz-Müzik: Aşık Ali Nurşani.',
+                     'Söz-Müzik: Anonim.',
+                     'Söz-Müzik: Pir Sultan Abdal.',
+                     'Söz-Müzik: Özay Gönlüm.',
+                     'Söz-Müzik: Anonim.',
+                     'Söz-Müzik: Karacaoğlan.',
+                     'Söz-Müzik: Abdülvahit Küzecioğlu.',
+                     'Söz-Müzik: Fatih - Ferhat Demirhan.',
+                     'Söz-Müzik: Nesimi Çimen.'];
+
+  let current = 0;
+
+  const dotRow = document.getElementById('dotRow');
+  for (let i = 0; i < total; i++) {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    d.onclick = () => goTo(i);
+    dotRow.appendChild(d);
+  }
+
+  function updateHeader() {
+    document.getElementById('slideNum').textContent   = (current + 1) + ' / ' + total;
+    document.getElementById('slideTitle').textContent = titles[current];
+    document.getElementById('slideSub').textContent   = subtitles[current];
+  }
+
+  function goTo(index) {
+    if (index === current) return;
+    const dir = index > current ? 1 : -1;
+    document.getElementById('slide-' + current).classList.remove('active');
+    current = index;
+    const s = document.getElementById('slide-' + current);
+    const cls = dir > 0 ? 'anim-right' : 'anim-left';
+    s.classList.add('active', cls);
+    s.addEventListener('animationend', () => s.classList.remove(cls), { once: true });
+    document.getElementById('prevBtn').disabled = current === 0;
+    document.getElementById('nextBtn').disabled = current === total - 1;
+    document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === current));
+    updateHeader();
+  }
+
+  function navigate(dir) {
+    const next = current + dir;
+    if (next >= 0 && next < total) goTo(next);
+  }
+</script>
+
+</body>
+</html>
