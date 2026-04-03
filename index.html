@@ -49,7 +49,7 @@
     .arrow-btn:hover { background: rgba(220, 200, 160, 0.9); }
     .arrow-btn:disabled { opacity: 0.25; cursor: default; }
 
-    .card-container { flex: 1; overflow: hidden; }
+    .card-container { flex: 1; overflow: hidden;  touch-action: pan-y;}
 
     .song-header-card {
       background: rgba(255, 248, 225, 0.82);
@@ -208,8 +208,6 @@
             <span class="tag">Serpil İçöz</span>
             <span class="tag">Zeliha Aden</span>
           </div>
-          <hr class="div">
-          <p style="font-size:13px;color:#7a5a2a;">Oklar ile sayfalar arasında geçiş yapabilirsiniz. Her sayfada koromuzdan yeni bir şarkı sizi bekliyor.</p>
         </div>
 
         <div class="slide" id="slide-1">
@@ -1054,15 +1052,23 @@
     const next = current + dir;
     if (next >= 0 && next < total) goTo(next);
   }
-  let touchStartX = 0;
+  const slider = document.querySelector('.card-container');
 
-  document.addEventListener('touchstart', e => {
+  let touchStartX = 0;
+  let touchEndX = 0;
+
+  slider.addEventListener('touchstart', e => {
     touchStartX = e.touches[0].clientX;
   }, { passive: true });
 
-  document.addEventListener('touchend', e => {
-    const diff = touchStartX - e.changedTouches[0].clientX;
-    if (Math.abs(diff) > 50) {
+  slider.addEventListener('touchmove', e => {
+    touchEndX = e.touches[0].clientX;
+  }, { passive: true });
+
+  slider.addEventListener('touchend', () => {
+    const diff = touchStartX - touchEndX;
+
+    if (Math.abs(diff) > 60) { // biraz artırdık, yanlış swipe azalır
       navigate(diff > 0 ? 1 : -1);
     }
   }, { passive: true });
