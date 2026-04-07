@@ -402,21 +402,6 @@
         <div class="slide" id="slide-12">
           <span class="tag">Solist: Hülya Yıldırım.</span>
           <div class="empty-box">
-            <span>Bahçalarda barım var</span>
-            <span>Bir heyva bir narım var</span>
-            <span>Bahçalarda barım var</span>
-            <span>Bir heyva bir narım var</span>
-            <span>Galem gaş gara gözlü</span>
-            <span>Hoş bahışlı yarim var</span>
-            <span>Galem gaş gara gözlü</span>
-            <span>Hoş bahışlı yarim var</span>
-            <br>
-            <span>Beri gel gara göz</span>
-            <span>Gel gel gara göz</span>
-            <span>Bu bağrımda yare göz</span>
-            <span>Derdime sen çare göz</span>
-            <span>Beri gel gara göz</span>
-            <br>
             <span>Bu dağdan aşmak olmaz</span>
             <span>Narıncı başmak olmaz</span>
             <span>Bir kuru sözden ötrü</span>
@@ -425,9 +410,21 @@
             <span>Olmaz olmaz olmaz</span>
             <span>Olmaz olmaz olmaz</span>
             <span>Olmaz olmaz olmaz</span>
-            <span>Yar yar yar yar</span>
-            <span>Olmaz olmaz olmaz</span>
-            <span>Olmaz olmaz olmaz</span>
+            <span>Yarda Yarda</span>
+            <br>
+            <span>Her gözelden yar olmaz</span>
+            <span>Seven bahtiyar olmaz</span>
+            <span>Yari gözel olanın</span>
+            <span>Elde ihtiyar olmaz</span>
+            <br>
+            <span>Bahçalarda barım var</span>
+            <span>Bir heyva bir narım var</span>
+            <span>Bahçalarda barım var</span>
+            <span>Bir heyva bir narım var</span>
+            <span>Galem gaş gara gözlü</span>
+            <span>Hoş bahışlı yarim var</span>
+            <span>Beri gel kara göz gel gel kara göz</span>
+            <span>Yüreğimde yara göz derdime sen çare göz beri gel kara göz</span>
           </div>
         </div>
 
@@ -785,6 +782,47 @@ cardContainer.addEventListener('touchend', () => {
     navigate(diff > 0 ? 1 : -1);
   }
 }, { passive: true });
+
+let initialDistance = 0;
+let currentScale = 1;
+
+function getDistance(touches) {
+  const dx = touches[0].clientX - touches[1].clientX;
+  const dy = touches[0].clientY - touches[1].clientY;
+  return Math.sqrt(dx * dx + dy * dy);
+}
+
+cardContainer.addEventListener('touchstart', e => {
+  if (e.touches.length === 2) {
+    initialDistance = getDistance(e.touches);
+  }
+}, { passive: true });
+
+cardContainer.addEventListener('touchmove', e => {
+  if (e.touches.length === 2) {
+    const newDistance = getDistance(e.touches);
+    const scaleChange = newDistance / initialDistance;
+
+    let newScale = currentScale * scaleChange;
+
+    // LIMITLER (çok abartmasın)
+    newScale = Math.max(1, Math.min(newScale, 2.5));
+
+    cardContainer.style.transform = `scale(${newScale})`;
+
+    cardContainer.style.transition = 'none';
+  }
+}, { passive: true });
+
+cardContainer.addEventListener('touchend', e => {
+  if (e.touches.length < 2) {
+    currentScale = parseFloat(
+      cardContainer.style.transform.replace(/[^0-9.]/g, '')
+    ) || 1;
+
+    cardContainer.style.transition = 'transform 0.2s ease';
+  }
+});
 </script>
 
 </body>
